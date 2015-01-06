@@ -1,0 +1,5 @@
+C:\Users\etaverne\Downloads\C#\LoginServer\LoginServer\bin\Debug\LoginServer.exe
+C:\Users\etaverne\Downloads\C#\LoginServer\LoginServer\bin\Debug\LoginServer.pdb
+C:\Users\etaverne\Downloads\C#\LoginServer\LoginServer\obj\x86\Debug\LoginServer.exe
+C:\Users\etaverne\Downloads\C#\LoginServer\LoginServer\obj\x86\Debug\LoginServer.pdb
+C:\Users\etaverne\Downloads\C#\LoginServer\LoginServer\obj\x86\Debug\LoginServer.csprojResolveAssemblyReference.cache
