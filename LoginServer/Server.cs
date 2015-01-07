@@ -77,6 +77,7 @@ namespace LoginServer
         /// </summary>
         private void cleanUp()
         {
+            //Todo : gestion des accès concurents à la mémoire
             while(this.active)
             {
                 List<ClientHandler> temp = new List<ClientHandler>();
