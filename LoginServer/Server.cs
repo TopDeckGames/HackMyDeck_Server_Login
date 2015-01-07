@@ -4,52 +4,120 @@ using System.Threading;
 using System.Net;
 using System.Text;
 using System.Collections.Generic;
+using System.Configuration;
 
 namespace LoginServer
 {
-	public class Server
-	{
-		private TcpListener tcpListener;
-		private Thread listenThread;
-		private int port = 3000;
+    public class Server
+    {
+        private TcpListener tcpListener;
+        private Thread listenThread, cleanupThread;
+        private int port;
+        private List<ClientHandler> handlers = new List<ClientHandler>();
+        private bool active;
 
-		private List<TcpClient> clients = new List<TcpClient> ();
+        /// <summary>
+        /// Initialise et démarre le serveur TCP
+        /// </summary>
+        public Server()
+        {
+            Logger.log(typeof(Server), "Démarrage du serveur", Logger.LogType.Info);
 
-		/// <summary>
-		/// Initialise et démarre le serveur TCP
-		/// </summary>
-		public Server ()
-		{
-			Logger.log(typeof(Server), "Démarrage du serveur", Logger.LogType.Info);
+            this.active = true;
 
-			this.tcpListener = new TcpListener (IPAddress.Any, port);
-			this.listenThread = new Thread (new ThreadStart (ListenForClients));
-			this.listenThread.Start();
-		}
+            port = int.Parse(ConfigurationManager.AppSettings["port"]);
 
-		/// <summary>
-		/// Attend les connexions et pour chacune lance un nouveau thread
-		/// </summary>
-		private void ListenForClients()
-		{
-			this.tcpListener.Start ();
+            this.tcpListener = new TcpListener(IPAddress.Any, port);
+            this.listenThread = new Thread(new ThreadStart(listenForClients));
+            this.listenThread.Start();
 
-			while (true) {
-				TcpClient client = this.tcpListener.AcceptTcpClient ();
-				ClientHandler clientHandler;
+            this.cleanupThread = new Thread(new ThreadStart(cleanUp));
+            this.cleanupThread.Start();
+        }
 
-				try
-				{
-					clientHandler = new ClientHandler (client);
-				}
-				catch(Exception e) {
-					Logger.log (typeof(Server), e.Message, Logger.LogType.Fatal);
-					continue;
-				}
+        /// <summary>
+        /// Attend les connexions et pour chacune lance un nouveau thread
+        /// </summary>
+        private void listenForClients()
+        {
+            this.tcpListener.Start();
 
-				Thread clientThread = new Thread (new ThreadStart (clientHandler.handle));
-				clientThread.Start();
-			}
-		}
-	}
+            while (this.active)
+            {
+                TcpClient client;
+
+                try
+                {
+                    client = this.tcpListener.AcceptTcpClient();
+                }
+                catch
+                {
+                    continue;
+                }
+                ClientHandler clientHandler;
+
+                try
+                {
+                    clientHandler = new ClientHandler(client);
+                    this.handlers.Add(clientHandler);
+                }
+                catch (Exception e)
+                {
+                    Logger.log(typeof(Server), e.Message, Logger.LogType.Fatal);
+                    continue;
+                }
+
+                Thread clientThread = new Thread(new ThreadStart(clientHandler.handle));
+                clientThread.Start();
+            }
+        }
+
+        /// <summary>
+        /// Enlève les handlers inactifs de la mémoire
+        /// </summary>
+        private void cleanUp()
+        {
+            while(this.active)
+            {
+                List<ClientHandler> temp = new List<ClientHandler>();
+                foreach (ClientHandler client in this.handlers)
+                {
+                    if (client.Active)
+                    {
+                        temp.Add(client);
+                    }
+                }
+                this.handlers = temp;
+
+                System.Threading.Thread.Sleep(300000);
+            }
+        }
+
+        /// <summary>
+        /// Arrête le serveur et stop tous les threads créés
+        /// </summary>
+        public void stop()
+        {
+            Logger.log(typeof(Server), "Arrêt du serveur", Logger.LogType.Info);
+
+            this.active = false;
+
+            //Arrêt des threads en cours
+            foreach(ClientHandler client in this.handlers)
+            {
+                client.Active = false;
+            }
+
+            //Fermeture du socket
+            this.tcpListener.Stop();
+        }
+
+        /// <summary>
+        /// Affiche les informations du serveur
+        /// </summary>
+        public void info()
+        {
+            Logger.log(typeof(Server), this.handlers.Count + " clients connectés", Logger.LogType.Info);
+        }
+    }
 }
