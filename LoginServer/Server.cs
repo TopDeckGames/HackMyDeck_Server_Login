@@ -10,11 +10,11 @@ namespace LoginServer
 {
     public class Server
     {
-        private TcpListener tcpListener;
+        private volatile TcpListener tcpListener;
         private Thread listenThread, cleanupThread;
-        private int port;
-        private List<ClientHandler> handlers = new List<ClientHandler>();
-        private bool active;
+        private volatile int port;
+        private volatile List<ClientHandler> handlers = new List<ClientHandler>();
+        private volatile bool active;
 
         /// <summary>
         /// Initialise et démarre le serveur TCP
@@ -56,19 +56,22 @@ namespace LoginServer
                 }
                 ClientHandler clientHandler;
 
-                try
+                lock (this.handlers)
                 {
-                    clientHandler = new ClientHandler(client);
-                    this.handlers.Add(clientHandler);
-                }
-                catch (Exception e)
-                {
-                    Logger.log(typeof(Server), e.Message, Logger.LogType.Fatal);
-                    continue;
-                }
+                    try
+                    {
+                        clientHandler = new ClientHandler(client);
+                        this.handlers.Add(clientHandler);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.log(typeof(Server), e.Message, Logger.LogType.Fatal);
+                        continue;
+                    }
 
-                Thread clientThread = new Thread(new ThreadStart(clientHandler.handle));
-                clientThread.Start();
+                    Thread clientThread = new Thread(new ThreadStart(clientHandler.handle));
+                    clientThread.Start();
+                }
             }
         }
 
@@ -77,18 +80,20 @@ namespace LoginServer
         /// </summary>
         private void cleanUp()
         {
-            //Todo : gestion des accès concurents à la mémoire
-            while(this.active)
+            while (this.active)
             {
-                List<ClientHandler> temp = new List<ClientHandler>();
-                foreach (ClientHandler client in this.handlers)
+                lock (this.handlers)
                 {
-                    if (client.Active)
+                    List<ClientHandler> temp = new List<ClientHandler>();
+                    foreach (ClientHandler client in this.handlers)
                     {
-                        temp.Add(client);
+                        if (client.Active)
+                        {
+                            temp.Add(client);
+                        }
                     }
+                    this.handlers = temp;
                 }
-                this.handlers = temp;
 
                 System.Threading.Thread.Sleep(300000);
             }
@@ -103,10 +108,13 @@ namespace LoginServer
 
             this.active = false;
 
-            //Arrêt des threads en cours
-            foreach(ClientHandler client in this.handlers)
+            lock (this.handlers)
             {
-                client.Active = false;
+                //Arrêt des threads en cours
+                foreach (ClientHandler client in this.handlers)
+                {
+                    client.Active = false;
+                }
             }
 
             //Fermeture du socket

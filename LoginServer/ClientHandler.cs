@@ -6,13 +6,15 @@ using System.IO;
 using System.Configuration;
 using System.Net;
 
+using LoginServer.Manager;
+
 namespace LoginServer
 {
     public class ClientHandler
     {
         private TcpClient tcpClient;
         private int messageLength;
-        private bool active;
+        private volatile bool active;
         public bool Active
         {
             get
@@ -82,6 +84,9 @@ namespace LoginServer
                     {
                         var i = reader.ReadInt32();
                         var j = reader.ReadUInt32();
+
+                        UserManager manager = new UserManager();
+                        manager.parser(reader);
                     }
                 }
 

@@ -9,3 +9,5 @@ C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\obj\x86\Debug\Lo
 C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\LoginServer.exe.config
 C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\LoginServer.exe
 C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\LoginServer.pdb
+C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\MySql.Data.dll
+C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\MySql.Web.dll

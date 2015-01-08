@@ -16,6 +16,10 @@ namespace LoginServer
             Warn
         }
 
+        private static volatile bool trace;
+        private static volatile string filePath;
+        private static Object o = new object();
+
         /// <summary>
         /// Log un évènement
         /// </summary>
@@ -28,19 +32,26 @@ namespace LoginServer
 
             Console.WriteLine(log);
 
-            if (bool.Parse(ConfigurationManager.AppSettings["trace"]))
+            lock (Logger.o)
             {
-                string filePath = ConfigurationManager.AppSettings["logs_path"] + "log_" + DateTime.Now.ToString("yyyyMMdd") + ".log";
-
-                try
+                if (Logger.filePath == null)
                 {
-                    StreamWriter file = new StreamWriter(filePath, true);
-                    file.WriteLine(log);
-                    file.Close();
+                    Logger.trace = bool.Parse(ConfigurationManager.AppSettings["trace"]);
+                    Logger.filePath = ConfigurationManager.AppSettings["logs_path"] + "log_" + DateTime.Now.ToString("yyyyMMdd") + ".log";
                 }
-                catch (Exception e)
+
+                if (Logger.trace)
                 {
-                    Console.WriteLine("Impossible d'enregistrer les logs : " + e.Message);
+                    try
+                    {
+                        StreamWriter file = new StreamWriter(Logger.filePath, true);
+                        file.WriteLine(log);
+                        file.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Impossible d'enregistrer les logs : " + e.Message);
+                    }
                 }
             }
         }
