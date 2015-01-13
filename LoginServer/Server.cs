@@ -87,7 +87,7 @@ namespace LoginServer
                     List<ClientHandler> temp = new List<ClientHandler>();
                     foreach (ClientHandler client in this.handlers)
                     {
-                        if (client.Active)
+                        if (client.isActive())
                         {
                             temp.Add(client);
                         }

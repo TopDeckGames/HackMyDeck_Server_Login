@@ -41,12 +41,14 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\AdapterManager.cs" />
+    <Compile Include="Controller\ControllerFactory.cs" />
+    <Compile Include="Controller\IController.cs" />
+    <Compile Include="Controller\UserController.cs" />
+    <Compile Include="Data\AdapterFactory.cs" />
     <Compile Include="Data\BaseAdapter.cs" />
     <Compile Include="Data\UserAdapter.cs" />
     <Compile Include="Helper\Checksum.cs" />
-    <Compile Include="Manager\BaseManager.cs" />
-    <Compile Include="Manager\IManager.cs" />
+    <Compile Include="Manager\ManagerFactory.cs" />
     <Compile Include="Manager\UserManager.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Program.cs" />

@@ -2,7 +2,7 @@
 
 namespace LoginServer.Data
 {
-    public static class AdapterManager
+    public static class AdapterFactory
     {
         private static UserAdapter userAdapter;
 
@@ -12,11 +12,11 @@ namespace LoginServer.Data
         /// <returns>L'adapteur des utilisateurs</returns>
         public static UserAdapter getUserAdapter()
         {
-            if (AdapterManager.userAdapter == null)
+            if (AdapterFactory.userAdapter == null)
             {
-                AdapterManager.userAdapter = new UserAdapter();
+                AdapterFactory.userAdapter = new UserAdapter();
             }
-            return AdapterManager.userAdapter;
+            return AdapterFactory.userAdapter;
         }
     }
 }
