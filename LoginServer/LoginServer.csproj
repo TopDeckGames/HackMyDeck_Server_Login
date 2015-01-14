@@ -29,11 +29,25 @@
     <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MySql.Data">
-      <HintPath>..\..\..\..\Downloads\Test\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+	  <Condition>'$(OS)' != 'Unix'</Condition>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Win\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Web">
-      <HintPath>..\..\..\..\Downloads\Test\MySql.Web.dll</HintPath>
+	<Reference Include="MySql.Web, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+	  <Condition>'$(OS)' != 'Unix'</Condition>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Win\MySql.Web.dll</HintPath>
+    </Reference>
+	<Reference Include="MySql.Data, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+	  <Condition>'$(OS)' == 'Unix'</Condition>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Unix\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Web, Version=6.9.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+	  <Condition>'$(OS)' == 'Unix'</Condition>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Unix\MySql.Web.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -58,9 +72,14 @@
     <Compile Include="Logger.cs" />
     <Compile Include="ClientHandler.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\Unix\MySql.Data.dll" />
+    <Content Include="Lib\Unix\MySql.Web.dll" />
+    <Content Include="Lib\Win\MySql.Data.dll" />
+    <Content Include="Lib\Win\MySql.Web.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
