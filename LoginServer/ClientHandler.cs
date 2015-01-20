@@ -132,7 +132,28 @@ namespace LoginServer
 
                 Logger.log(typeof(ClientHandler), "Requete", Logger.LogType.Info);
                 Stream stream = new MemoryStream(request);
-                var result = this.parser(stream);
+                Response response = this.parser(stream);
+                
+                //Si le client est encore connecté on lui envoi la réponse
+                if(this.tcpClient.Connected)
+                {
+	                byte[] data = response.getResponse();
+	                
+	                //Complète de façons à ce que la réponse soit un multiple de la longueur du message définie
+	                int diff = this.messageLength - data.Length % this.messageLength;
+	                if(diff > 0)
+	                {
+	                	byte[] temp = new byte[data.Length + diff];
+	                	data.CopyTo(temp, 0);
+	                	for(int i = 0; i < diff; i++)
+	                	{
+	                		data[data.Length + i] = 0;
+	                	}
+	                	data = temp;
+	                }
+	                
+	                this.tcpClient.Client.Send(data, data.Length, SocketFlags.None);
+                }
             }
         }
 
@@ -183,8 +204,9 @@ namespace LoginServer
         /// Parse le flux en entrée et exécute la requête correspondante
         /// </summary>
         /// <param name="stream">Stream.</param>
-        private object parser(Stream stream)
+        private Response parser(Stream stream)
         {
+        	Response response;
             using (BinaryReader reader = new BinaryReader(stream))
             {
                 try
@@ -226,30 +248,34 @@ namespace LoginServer
                     {
                         Stream dataStream = new MemoryStream(message);
 
-                        Response response;
                         switch (idController)
                         {
                             case 1:
                                 response = ControllerFactory.getUserController().parser(dataStream);
+                                response.addValue(1);
                                 break;
                             default:
                                 Logger.log(typeof(ClientHandler), "Le controlleur n'existe pas " + idController, Logger.LogType.Error);
-                                //Todo reponse erreur
+                                response = new Response();
+                                response.addValue(0);
                                 break;
                         }
                     }
                     else
                     {
                         Logger.log(typeof(ClientHandler), "Les données sont érronées", Logger.LogType.Error);
-                        //Todo reponse erreur
+                        response = new Response();
+                        response.addValue(0);
                     }
                 }
                 catch (Exception e)
                 {
                     Logger.log(typeof(ClientHandler), e.Message, Logger.LogType.Error);
+                    response = new Response();
+                    response.addValue(0);
                 }
             }
-            return new object();
+            return response;
         }
 
         /// <summary>
