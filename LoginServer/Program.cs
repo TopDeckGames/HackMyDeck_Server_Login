@@ -4,9 +4,13 @@ namespace LoginServer
 {
     class MainClass
     {
+        private static Server server;
+        private static Monitor monitor;
+
         public static void Main(string[] args)
         {
-            Server server = new Server();
+            server = new Server();
+            monitor = new Monitor();
 
             while (true)
             {
