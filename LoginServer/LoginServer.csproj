@@ -49,6 +49,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\Unix\MySql.Web.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.8, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -62,6 +66,7 @@
     <Compile Include="Data\BaseAdapter.cs" />
     <Compile Include="Data\UserAdapter.cs" />
     <Compile Include="Helper\Checksum.cs" />
+    <Compile Include="Helper\JsonSerializer.cs" />
     <Compile Include="Manager\ManagerFactory.cs" />
     <Compile Include="Manager\UserManager.cs" />
     <Compile Include="Model\User.cs" />
@@ -78,6 +83,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Keys\monitoring.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lib\Newtonsoft.Json.dll" />
     <Content Include="Lib\Unix\MySql.Data.dll" />
     <Content Include="Lib\Unix\MySql.Web.dll" />
     <Content Include="Lib\Win\MySql.Data.dll" />

@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Security.Cryptography;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using System.IO;
 
 namespace LoginServer
 {
@@ -14,6 +16,9 @@ namespace LoginServer
         private int messageLength;
         private bool active;
         private RSACryptoServiceProvider rsaClient, rsaServer;
+        private NetworkStream clientStream;
+        private volatile StringBuilder requests = new StringBuilder();
+        private Thread handleThread;
         
         /// <summary>
         /// Initialise le MonitorHandler
@@ -38,10 +43,15 @@ namespace LoginServer
 
             try
             {
+                //Récupèration de la clef de chiffrement
+                StreamReader keyFile = new StreamReader(ConfigurationManager.AppSettings["monitoring_public_key"]);
+                string key = keyFile.ReadToEnd();
+                keyFile.Close();
+
                 //On génère les objets nécessaires à l'encryption
                 this.rsaClient = new RSACryptoServiceProvider(1024);
                 this.rsaServer = new RSACryptoServiceProvider(1024);
-                this.rsaClient.FromXmlString(ConfigurationManager.AppSettings["monitoring_public_key"]);
+                this.rsaClient.FromXmlString(key);
 
                 ASCIIEncoding byteConverter = new ASCIIEncoding();
 
@@ -51,6 +61,7 @@ namespace LoginServer
                 foreach (byte[] m in messages)
                 {
                     this.tcpClient.Client.Send(this.rsaClient.Encrypt(m, false));
+                    Thread.Sleep(5);
                 }
 
             }
@@ -60,6 +71,65 @@ namespace LoginServer
                 this.rsaClient.PersistKeyInCsp = false;
                 this.rsaServer.PersistKeyInCsp = false;
             }
+
+            this.handleThread = new Thread(new ThreadStart(handle));
+            this.handleThread.Start();
+        }
+
+        /// <summary>
+        /// Ecoute les requêtes du client
+        /// </summary>
+        public void handle()
+        {
+            if (this.tcpClient.Connected)
+            {
+                this.clientStream = this.tcpClient.GetStream();
+                byte[] message = new byte[this.messageLength];
+                int bytesRead;
+                ASCIIEncoding byteConverter = new ASCIIEncoding();
+
+                while (this.active)
+                {
+                    bytesRead = 0;
+
+                    try
+                    {
+                        bytesRead = clientStream.Read(message, 0, this.messageLength);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.log(typeof(MonitorHandler), "Erreur lors de l'execution du socket : " + e.Message, Logger.LogType.Error);
+                        break;
+                    }
+
+                    if (bytesRead == 0)
+                    {
+                        Logger.log(typeof(MonitorHandler), "Connexion interrompue", Logger.LogType.Info);
+                        break;
+                    }
+
+                    //On récupère le message exact qui a été reçu
+                    byte[] data = new byte[bytesRead];
+                    for (int i = 0; i < bytesRead; i++)
+                        data[i] = message[i];
+
+                    try
+                    {
+                        //On décrypte la chaine charactère et on l'ajoute à la pile
+                        string request = byteConverter.GetString(this.rsaServer.Decrypt(data, false));
+                        this.requests.Append(request);
+                    }
+                    catch (CryptographicException e)
+                    {
+                        Logger.log(typeof(MonitorHandler), "Erreur lors du décryptage du message : " + e.Message, Logger.LogType.Error);
+                    }
+                }
+
+                clientStream.Close();
+                this.active = false;
+            }
+
+            this.tcpClient.Close();
         }
 
         private static List<byte[]> SplitByteArray(byte[] array, int length)

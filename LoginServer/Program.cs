@@ -22,6 +22,7 @@ namespace LoginServer
                     case "stop":
                     case "exit":
                         server.stop();
+                        monitor.stop();
                         Environment.Exit(0);
                         break;
                     case "restart":

@@ -11,7 +11,7 @@ namespace LoginServer
         private TcpListener tcpListener;
         private int port;
         private Thread listenThread;
-        private bool active;
+        private volatile bool active;
 
         /// <summary>
         /// Initialise et démarre l'interface de monitoring
@@ -54,10 +54,16 @@ namespace LoginServer
                 }
                 catch (Exception e)
                 {
-                    Logger.log(typeof(Server), e.Message, Logger.LogType.Fatal);
+                    Logger.log(typeof(Monitor), e.Message, Logger.LogType.Fatal);
                     continue;
                 }
             }
+        }
+
+        public void stop()
+        {
+            Logger.log(typeof(Monitor), "Arrêt de l'interface de monitoring", Logger.LogType.Info);
+            this.active = false;
         }
     }
 }
