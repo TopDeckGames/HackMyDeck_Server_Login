@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Servers>
+  <Server Name="Test">
+    <IpAddress>127.0.0.1</IpAddress>
+    <Port>3002</Port>
+    <PortMonitoring>3003</PortMonitoring>
+    <MaxPlayers>10</MaxPlayers>
+    <Type>1</Type>
+  </Server>
+</Servers>

@@ -92,7 +92,7 @@ namespace LoginServer.Controller
         /// Enregistre un nouvel utilisateur
         /// </summary>
         private Response registerAction(string login, string password)
-        {return new Response();
+        {
             try
             {
                 ManagerFactory.getUserManager().registration(login, password);
@@ -105,6 +105,7 @@ namespace LoginServer.Controller
             }
 
             //Todo construire réponse succés
+            return new Response();
         }
     }
 }

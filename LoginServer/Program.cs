@@ -1,4 +1,7 @@
 ﻿using System;
+using LoginServer.Data;
+using LoginServer.Manager;
+using LoginServer.Model;
 
 namespace LoginServer
 {
@@ -9,6 +12,23 @@ namespace LoginServer
 
         public static void Main(string[] args)
         {
+            Logger.log(typeof(MainClass), "Chargement de la configuration", Logger.LogType.Info);
+            try
+            {
+                foreach (Model.Server s in AdapterFactory.getServerAdapter().getAllServers())
+                {
+                    ManagerFactory.getServerManager().addServer(s);
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.log(typeof(MainClass), "Impossible de charger la configuration " + e.Message, Logger.LogType.Fatal);
+                return;
+            }
+
+            Logger.log(typeof(MainClass), "Test de connexion aux serveurs distants", Logger.LogType.Info);
+            ManagerFactory.getServerManager().checkServers();
+
             server = new Server();
             monitor = new Monitor();
 
@@ -31,6 +51,9 @@ namespace LoginServer
                         break;
                     case "info":
                         server.info();
+                        break;
+                    case "info servers":
+                        Console.WriteLine(ManagerFactory.getServerManager().ToString());
                         break;
                     case "":
                         break;

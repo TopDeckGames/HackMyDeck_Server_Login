@@ -64,20 +64,23 @@
     <Compile Include="Controller\UserController.cs" />
     <Compile Include="Data\AdapterFactory.cs" />
     <Compile Include="Data\BaseAdapter.cs" />
+    <Compile Include="Data\ServerAdapter.cs" />
     <Compile Include="Data\UserAdapter.cs" />
     <Compile Include="Helper\Checksum.cs" />
     <Compile Include="Helper\JsonSerializer.cs" />
     <Compile Include="Manager\ManagerFactory.cs" />
     <Compile Include="Manager\UserManager.cs" />
+    <Compile Include="Model\Server.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Monitor.cs" />
-    <Compile Include="MonitorHandler.cs" />
+    <Compile Include="Handlers\MonitorHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="ClientHandler.cs" />
+    <Compile Include="Handlers\ClientHandler.cs" />
+    <Compile Include="Manager\ServerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -86,11 +89,17 @@
     <Content Include="Keys\monitoring.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Keys\private.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Lib\Newtonsoft.Json.dll" />
     <Content Include="Lib\Unix\MySql.Data.dll" />
     <Content Include="Lib\Unix\MySql.Web.dll" />
     <Content Include="Lib\Win\MySql.Data.dll" />
     <Content Include="Lib\Win\MySql.Web.dll" />
+    <Content Include="Servers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
