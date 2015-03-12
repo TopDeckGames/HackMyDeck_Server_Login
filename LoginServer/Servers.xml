@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Servers>
-  <Server Name="Test">
+  <Server Name="Gestion 1">
     <IpAddress>127.0.0.1</IpAddress>
     <Port>3002</Port>
     <PortMonitoring>3003</PortMonitoring>

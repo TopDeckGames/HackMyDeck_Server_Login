@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.IO;
+using LoginServer.Helper;
 
 namespace LoginServer.Handlers
 {
@@ -57,11 +58,11 @@ namespace LoginServer.Handlers
 
                 //On crypte la clef publique générée et on l'envoi au client
                 String publicKeyServer = this.rsaServer.ToXmlString(false);
-                List<byte[]> messages = SplitByteArray(byteConverter.GetBytes(publicKeyServer), 117);
+                List<byte[]> messages = ByteArray.SplitByteArray(byteConverter.GetBytes(publicKeyServer), 117);
                 foreach (byte[] m in messages)
                 {
                     this.tcpClient.Client.Send(this.rsaClient.Encrypt(m, false));
-                    Thread.Sleep(5);
+                    Thread.Sleep(50);
                 }
 
             }
@@ -130,26 +131,6 @@ namespace LoginServer.Handlers
             }
 
             this.tcpClient.Close();
-        }
-
-        private static List<byte[]> SplitByteArray(byte[] array, int length)
-        {
-            int arrayLength = array.Length;
-            List<byte[]> splitted = new List<byte[]>();
-
-            for (int i = 0; i < arrayLength; i = i + length)
-            {
-                byte[] val = new byte[length];
-
-                if (arrayLength < i + length)
-                {
-                    length = arrayLength - i;
-                }
-                Array.Copy(array, i, val, 0, length);
-                splitted.Add(val);
-            }
-
-            return splitted;
         }
     }
 }

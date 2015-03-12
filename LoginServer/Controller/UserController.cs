@@ -78,9 +78,15 @@ namespace LoginServer.Controller
             {
             	//Ajout des valeurs de l'utilisateur
             	response.addValue(user.Id);
-            	//Ajout des données du serveur de jeu
-                //Todo inscription dans un serveur libre
-                
+
+                //Inscription dans un serveur disponible
+                ManagerFactory.getServerManager().checkServers();
+                Model.Server server = ManagerFactory.getServerManager().enterInServer(user);
+
+                //Ajout des données de connexion au server
+                response.addValue(BitConverter.ToInt32(server.Address.GetAddressBytes(), 0));
+                response.addValue(server.Port);
+
                 //Ajout de l'ID de la réponse
                 response.addValue(1);
             }

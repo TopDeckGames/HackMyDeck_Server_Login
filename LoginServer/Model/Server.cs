@@ -13,6 +13,7 @@ namespace LoginServer.Model
         public int PortMonitoring { get; set; }
         public ServerType Type { get; set; }
         public int MaxPlayers { get; set; }
+        public int NbPlayers { get; set; }
         public bool Available { get; set; }
     }
 }

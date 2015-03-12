@@ -7,6 +7,8 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Configuration;
 using System.IO;
+using System.Threading;
+using LoginServer.Helper;
 
 namespace LoginServer
 {
@@ -47,7 +49,7 @@ namespace LoginServer
         /// Instancie la connexion vers un serveur précis
         /// </summary>
         /// <param name="server">Serveur auquel se connecter</param>
-        public void connectToServer(Model.Server server)
+        private void connectToServer(Model.Server server)
         {
             try
             {
@@ -88,7 +90,7 @@ namespace LoginServer
                             this.rsaServer.FromXmlString(serverKey);
                             flag = false;
                         }
-                        catch(CryptographicException)
+                        catch(Exception)
                         {
                             flag = true;
                         }
@@ -115,7 +117,7 @@ namespace LoginServer
         /// <summary>
         /// Déconnexion du serveur courrant
         /// </summary>
-        public void disconnectFromServer()
+        private void disconnectFromServer()
         {
             if(this.rsaClient != null)
                 this.rsaClient.PersistKeyInCsp = false;
@@ -134,7 +136,88 @@ namespace LoginServer
             {
                 this.connectToServer(server);
 
+                try
+                {
+                    if (this.tcpClient.Connected)
+                    {
+                        //Préparation de la requête
+                        Request req = new Request();
+                        req.Type = Request.TypeRequest.Check;
+                        string reqJson = JsonSerializer.toJson(req);
+
+                        //Envoi de la requête
+                        this.sendToServer(reqJson);
+
+                        Logger.log(typeof(ServerManager), String.Format("Serveur {0}({1}) disponible", server.Name, server.Type), Logger.LogType.Info);
+                        server.Available = true;
+
+                        this.disconnectFromServer();
+                    }
+                    else
+                    {
+                        server.Available = false;
+                    }
+                }
+                catch (Exception)
+                {
+                    server.Available = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Inscrit le joueur dans un serveur de gestion
+        /// </summary>
+        /// <param name="user">Utilisateur à inscrire dans le serveur</param>
+        /// <returns>Serveur sélectionné</returns>
+        public Model.Server enterInServer(User user)
+        {
+            Model.Server selected = null;
+            //On sélectionne un serveur parmis la liste
+            foreach (Model.Server server in this.servers)
+            {
+                //Si le serveur est un serveur de gestion disponible et qui n'a pas atteind sa capacité maximale
+                if (server.Type.Equals(Model.Server.ServerType.Gestion) && server.Available && server.NbPlayers < server.MaxPlayers)
+                {
+                    //Si le serveur est moins chargé que celui sélectionné on échange pour équilibrer les charges
+                    if (selected == null || server.NbPlayers < selected.NbPlayers)
+                    {
+                        selected = server;
+                    }
+                }
+            }
+
+            //Si un serveur a été sélectionné on le contact pour enregistrer le joueur
+            if (selected != null)
+            {
+                this.connectToServer(selected);
+
+                //Préparation de la requête
+                Request req = new Request();
+                req.Type = Request.TypeRequest.Register;
+                req.Data = JsonSerializer.toJson(user);
+                string message = JsonSerializer.toJson(req);
+                //Envoi de la requête
+                this.sendToServer(message);
+
                 this.disconnectFromServer();
+            }
+            return selected;
+        }
+
+        /// <summary>
+        /// Envoi une chaine de charactères au serveur en la cryptant
+        /// </summary>
+        /// <param name="message">Message à envoyer</param>
+        private void sendToServer(string message)
+        {
+            ASCIIEncoding byteConverter = new ASCIIEncoding();
+
+            List<byte[]> messages = ByteArray.SplitByteArray(byteConverter.GetBytes(message), 117);
+            foreach (byte[] m in messages)
+            {
+                this.tcpClient.Client.Send(this.rsaClient.Encrypt(m, false));
+                Thread.Sleep(5);
             }
         }
 
