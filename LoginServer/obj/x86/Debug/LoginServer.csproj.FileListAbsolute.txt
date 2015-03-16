@@ -11,3 +11,15 @@ C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\LoginS
 C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\LoginServer.pdb
 C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\MySql.Data.dll
 C:\Users\Emile\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\Debug\MySql.Web.dll
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\LoginServer.exe.config
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\obj\x86\Debug\LoginServer.exe
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\obj\x86\Debug\LoginServer.pdb
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\Keys\monitoring.xml
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\Keys\private.xml
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\Servers.xml
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\LoginServer.exe
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\LoginServer.pdb
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\MySql.Data.dll
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\MySql.Web.dll
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\bin\x86\Debug\Newtonsoft.Json.dll
+D:\Source\Repos\HackMyDeck_Server_Login\LoginServer\obj\x86\Debug\LoginServer.csprojResolveAssemblyReference.cache

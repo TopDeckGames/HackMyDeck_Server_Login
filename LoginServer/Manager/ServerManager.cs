@@ -148,7 +148,6 @@ namespace LoginServer
                         //Envoi de la requête
                         this.sendToServer(reqJson);
 
-                        Logger.log(typeof(ServerManager), String.Format("Serveur {0}({1}) disponible", server.Name, server.Type), Logger.LogType.Info);
                         server.Available = true;
 
                         this.disconnectFromServer();
@@ -162,6 +161,11 @@ namespace LoginServer
                 {
                     server.Available = false;
                 }
+
+                if(server.Available)
+                    Logger.log(typeof(ServerManager), String.Format("Serveur {0}({1}) disponible", server.Name, server.Type), Logger.LogType.Info);
+                else
+                    Logger.log(typeof(ServerManager), String.Format("Serveur {0}({1}) indisponible", server.Name, server.Type), Logger.LogType.Info);
             }
         }
 
