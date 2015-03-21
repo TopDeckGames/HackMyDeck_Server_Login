@@ -1,5 +1,6 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
+using System.Configuration;
 
 namespace LoginServer.Data
 {
@@ -10,7 +11,7 @@ namespace LoginServer.Data
 
         public BaseAdapter()
         {
-            this.connectionString = "SERVER=localhost; DATABASE=test; UID=root";
+            this.connectionString = ConfigurationManager.ConnectionStrings["Connexion1"].ConnectionString;
             this.connection = new MySqlConnection(this.connectionString);
         }
     }
