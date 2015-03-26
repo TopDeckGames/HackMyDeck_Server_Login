@@ -2,6 +2,7 @@
 using System.IO;
 using LoginServer.Model;
 using LoginServer.Manager;
+using LoginServer.Helper;
 
 namespace LoginServer.Controller
 {
@@ -24,14 +25,14 @@ namespace LoginServer.Controller
                     {
                         case 1:
                             response = this.loginAction(
-                                new string(reader.ReadChars(User.LOGIN_LENGTH)),
+                                StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH))
                             );
                     		response.addValue(1);
                             break;
                         case 2:
                             response = this.registerAction(
-                                new string(reader.ReadChars(User.LOGIN_LENGTH)),
+                                StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH))
                             );
                             response.addValue(1);
