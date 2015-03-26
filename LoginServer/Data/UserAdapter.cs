@@ -20,7 +20,7 @@ namespace LoginServer.Data
         public new User connection(string username, string password)
         {
             MySqlCommand cmd = base.connection.CreateCommand();
-            cmd.CommandText = "SELECT * FROM USER WHERE login = @login AND password = @password";
+            cmd.CommandText = "SELECT * FROM User WHERE Login = @login AND Password = @password";
             cmd.Parameters.AddWithValue("@login", username);
             cmd.Parameters.AddWithValue("@password", password);
             MySqlDataReader reader;
@@ -64,7 +64,7 @@ namespace LoginServer.Data
         public void registration(User user)
         {
             MySqlCommand cmd = base.connection.CreateCommand();
-            cmd.CommandText = "INSERT INTO USER(login, password) VALUES (@login, @password)";
+            cmd.CommandText = "INSERT INTO User(Login, Password) VALUES (@login, @password)";
             cmd.Parameters.AddWithValue("@login", user.Login);
             cmd.Parameters.AddWithValue("@password", user.Password);
 

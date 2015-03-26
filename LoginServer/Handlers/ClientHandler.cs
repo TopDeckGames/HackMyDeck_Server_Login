@@ -138,6 +138,7 @@ namespace LoginServer.Handlers
                 if(this.tcpClient.Connected)
                 {
 	                byte[] data = response.getResponse();
+                    response.closeWriter();
 	                
 	                //Complète de façons à ce que la réponse soit un multiple de la longueur du message définie
 	                int diff = this.messageLength - data.Length % this.messageLength;
@@ -147,7 +148,7 @@ namespace LoginServer.Handlers
 	                	data.CopyTo(temp, 0);
 	                	for(int i = 0; i < diff; i++)
 	                	{
-	                		data[data.Length + i] = 0;
+	                		temp[data.Length + i] = 0;
 	                	}
 	                	data = temp;
 	                }
@@ -257,6 +258,7 @@ namespace LoginServer.Handlers
                             default:
                                 Logger.log(typeof(ClientHandler), "Le controlleur n'existe pas " + idController, Logger.LogType.Error);
                                 response = new Response();
+                                response.openWriter();
                                 response.addValue(0);
                                 break;
                         }
@@ -265,6 +267,7 @@ namespace LoginServer.Handlers
                     {
                         Logger.log(typeof(ClientHandler), "Les données sont érronées", Logger.LogType.Error);
                         response = new Response();
+                        response.openWriter();
                         response.addValue(0);
                     }
                 }
@@ -272,6 +275,7 @@ namespace LoginServer.Handlers
                 {
                     Logger.log(typeof(ClientHandler), e.Message, Logger.LogType.Error);
                     response = new Response();
+                    response.openWriter();
                     response.addValue(0);
                 }
             }
