@@ -61,6 +61,7 @@ namespace LoginServer.Controller
         {
             User user = null;
             Response response = new Response();
+            response.openWriter();
 
             try
             {
@@ -87,9 +88,6 @@ namespace LoginServer.Controller
                 //Ajout des données de connexion au server
                 response.addValue(BitConverter.ToInt32(server.Address.GetAddressBytes(), 0));
                 response.addValue(server.Port);
-
-                //Ajout de l'ID de la réponse
-                response.addValue(1);
             }
             
             return response;

@@ -208,12 +208,13 @@ namespace LoginServer.Handlers
         private Response parser(Stream stream)
         {
         	Response response;
+            uint token = uint.MinValue;
             using (BinaryReader reader = new BinaryReader(stream))
             {
                 try
                 {
                     //Lecture de l'entête
-                    uint token = reader.ReadUInt32();
+                    token = reader.ReadUInt32();
                     ushort dataSize = reader.ReadUInt16();
                     ushort idController = reader.ReadUInt16();
                     char[] checksum = reader.ReadChars(32);
@@ -279,6 +280,28 @@ namespace LoginServer.Handlers
                     response.addValue(0);
                 }
             }
+
+            //Écriture de l'entête
+            try
+            {
+                byte[] responseContent = response.getResponse();
+
+                Response finalResponse = new Response();
+                finalResponse.openWriter();
+
+                finalResponse.addValue(token);
+                finalResponse.addValue(responseContent.Length);
+                finalResponse.addValue(Checksum.create(responseContent));
+                finalResponse.addValue(responseContent);
+
+                response = finalResponse;
+            }
+            catch(Exception e)
+            {
+                Logger.log(typeof(ClientHandler), "Impossible d'écrire la réponse : " + e.Message, Logger.LogType.Fatal);
+                response = new Response();
+            }
+
             return response;
         }
 

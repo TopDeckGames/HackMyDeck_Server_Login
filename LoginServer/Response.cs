@@ -150,6 +150,22 @@ namespace LoginServer
     			throw e;
     		}
     	}
+
+        /// <summary>
+        /// Ajoute un tableau de bytes à la réponse
+        /// </summary>
+        /// <param name="value">Byte[]</param>
+        public void addValue(byte[] value)
+        {
+            try
+            {
+                this.writer.Write(value);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     	
     	/// <summary>
     	/// Retourne la réponse au format binaire
@@ -160,7 +176,8 @@ namespace LoginServer
     		byte[] result = new byte[this.binaryData.Length];
     		using(var reader = new BinaryReader(this.binaryData, this.encoding))
     		{
-    			reader.Read(result, 0, int.Parse(this.binaryData.Length.ToString()));
+                reader.BaseStream.Position = 0;
+                reader.Read(result, 0, result.Length);
     		}
     		return result;
     	}

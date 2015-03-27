@@ -27,5 +27,27 @@ namespace LoginServer.Helper
                 return checksum.Equals(sBuilder.ToString());
             }
         }
+
+        /// <summary>
+        /// Crée la chaine de vérification associée à un ensemble de données
+        /// </summary>
+        /// <param name="data">Données</param>
+        /// <returns>Chaine de vérification</returns>
+        public static string create(byte[] data)
+        {
+            using (MD5 md5Hash = MD5.Create())
+            {
+                byte[] hash = md5Hash.ComputeHash(data);
+
+                StringBuilder sBuilder = new StringBuilder();
+
+                for (int i = 0; i < hash.Length; i++)
+                {
+                    sBuilder.Append(hash[i].ToString("x2"));
+                }
+
+                return sBuilder.ToString();
+            }
+        }
     }
 }
