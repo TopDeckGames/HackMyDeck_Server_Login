@@ -52,8 +52,11 @@ namespace LoginServer
                     case "info":
                         server.info();
                         break;
-                    case "info servers":
+                    case "servers info":
                         Console.WriteLine(ManagerFactory.getServerManager().ToString());
+                        break;
+                    case "servers check":
+                        ManagerFactory.getServerManager().checkServers();
                         break;
                     case "":
                         break;

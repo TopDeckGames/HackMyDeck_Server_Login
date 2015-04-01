@@ -2,6 +2,7 @@
 using System.IO;
 using LoginServer.Model;
 using LoginServer.Manager;
+using LoginServer.Helper;
 
 namespace LoginServer.Controller
 {
@@ -24,17 +25,15 @@ namespace LoginServer.Controller
                     {
                         case 1:
                             response = this.loginAction(
-                                new string(reader.ReadChars(User.LOGIN_LENGTH)),
+                                StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH))
                             );
-                    		response.addValue(1);
                             break;
                         case 2:
                             response = this.registerAction(
-                                new string(reader.ReadChars(User.LOGIN_LENGTH)),
+                                StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH))
                             );
-                            response.addValue(1);
                             break;
                         default:
                             Logger.log(typeof(UserManager), "L'action n'existe pas : " + idAction, Logger.LogType.Error);
@@ -60,6 +59,7 @@ namespace LoginServer.Controller
         {
             User user = null;
             Response response = new Response();
+            response.openWriter();
 
             try
             {
@@ -76,6 +76,8 @@ namespace LoginServer.Controller
             }
             else
             {
+                response.addValue(1);
+
             	//Ajout des valeurs de l'utilisateur
             	response.addValue(user.Id);
 
@@ -85,10 +87,7 @@ namespace LoginServer.Controller
 
                 //Ajout des données de connexion au server
                 response.addValue(BitConverter.ToInt32(server.Address.GetAddressBytes(), 0));
-                response.addValue(server.Port);
-
-                //Ajout de l'ID de la réponse
-                response.addValue(1);
+                response.addValue(server.Port); 
             }
             
             return response;
