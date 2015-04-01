@@ -89,6 +89,7 @@
     <Compile Include="Helper\ByteArray.cs" />
     <Compile Include="Helper\Checksum.cs" />
     <Compile Include="Helper\JsonSerializer.cs" />
+    <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="Manager\ManagerFactory.cs" />
     <Compile Include="Manager\UserManager.cs" />
     <Compile Include="Model\Request.cs" />
