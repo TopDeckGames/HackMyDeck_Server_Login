@@ -28,14 +28,12 @@ namespace LoginServer.Controller
                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH))
                             );
-                    		response.addValue(1);
                             break;
                         case 2:
                             response = this.registerAction(
                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH))
                             );
-                            response.addValue(1);
                             break;
                         default:
                             Logger.log(typeof(UserManager), "L'action n'existe pas : " + idAction, Logger.LogType.Error);
@@ -78,6 +76,8 @@ namespace LoginServer.Controller
             }
             else
             {
+                response.addValue(1);
+
             	//Ajout des valeurs de l'utilisateur
             	response.addValue(user.Id);
 
@@ -87,7 +87,7 @@ namespace LoginServer.Controller
 
                 //Ajout des données de connexion au server
                 response.addValue(BitConverter.ToInt32(server.Address.GetAddressBytes(), 0));
-                response.addValue(server.Port);
+                response.addValue(server.Port); 
             }
             
             return response;
