@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Collections;
@@ -207,8 +207,9 @@ namespace LoginServer.Handlers
         /// <param name="stream">Stream.</param>
         private Response parser(Stream stream)
         {
-        	Response response;
+        	Response response = null;
             uint token = uint.MinValue;
+            ushort state = 0;
             using (BinaryReader reader = new BinaryReader(stream))
             {
                 try
@@ -254,42 +255,37 @@ namespace LoginServer.Handlers
                         {
                             case 1:
                                 response = ControllerFactory.getUserController().parser(dataStream);
+                                state = 1;
                                 break;
                             default:
                                 Logger.log(typeof(ClientHandler), "Le controlleur n'existe pas " + idController, Logger.LogType.Error);
-                                response = new Response();
-                                response.openWriter();
-                                response.addValue(0);
                                 break;
                         }
                     }
                     else
                     {
                         Logger.log(typeof(ClientHandler), "Les données sont érronées", Logger.LogType.Error);
-                        response = new Response();
-                        response.openWriter();
-                        response.addValue(0);
                     }
                 }
                 catch (Exception e)
                 {
                     Logger.log(typeof(ClientHandler), e.Message, Logger.LogType.Error);
-                    response = new Response();
-                    response.openWriter();
-                    response.addValue(0);
                 }
             }
 
             //Écriture de l'entête
             try
             {
-                byte[] responseContent = response.getResponse();
+                byte[] responseContent = new byte[0];
+                if(response != null)
+                    responseContent = response.getResponse();
 
                 Response finalResponse = new Response();
                 finalResponse.openWriter();
 
                 finalResponse.addValue(token);
-                finalResponse.addValue(responseContent.Length);
+                finalResponse.addValue(ushort.Parse(responseContent.Length.ToString()));
+                finalResponse.addValue(state);
                 finalResponse.addValue(Checksum.create(responseContent));
                 finalResponse.addValue(responseContent);
 

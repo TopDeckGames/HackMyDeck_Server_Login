@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using LoginServer.Model;
 using LoginServer.Manager;
@@ -32,7 +32,9 @@ namespace LoginServer.Controller
                         case 2:
                             response = this.registerAction(
                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
-                                new string(reader.ReadChars(User.PASSWORD_LENGTH))
+                                new string(reader.ReadChars(User.PASSWORD_LENGTH)),
+                                new string(reader.ReadChars(User.FIRSTNAME_LENGTH)),
+                                new string(reader.ReadChars(User.LASTNAME_LENGTH))
                             );
                             break;
                         default:
@@ -96,21 +98,23 @@ namespace LoginServer.Controller
         /// <summary>
         /// Enregistre un nouvel utilisateur
         /// </summary>
-        private Response registerAction(string login, string password)
+        private Response registerAction(string login, string password, string firstname, string lastname)
         {
+            Response response = new Response();
+            response.openWriter();
+
             try
             {
-                ManagerFactory.getUserManager().registration(login, password);
+                ManagerFactory.getUserManager().registration(login, password, firstname, lastname);
+                response.addValue(1);
             }
             catch (Exception e)
             {
                 Logger.log(typeof(UserManager), "Impossible d'enregistrer l'utilisateur : " + e.Message, Logger.LogType.Error);
-                //Todo construire réponse erreur
-                return new Response();
+                response.addValue(0);
             }
 
-            //Todo construire réponse succés
-            return new Response();
+            return response;
         }
     }
 }

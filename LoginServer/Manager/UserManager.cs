@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using MySql.Data.MySqlClient;
 using LoginServer.Model;
@@ -31,9 +31,13 @@ namespace LoginServer.Manager
         /// </summary>
         /// <param name="login">Login.</param>
         /// <param name="password">Password.</param>
-        public void registration(string login, string password)
+        public void registration(string login, string password, string firstname, string lastname)
         {
-            User user = new User(0, login, password);
+            User user = new User(0);
+            user.Login = login;
+            user.Password = password;
+            user.Firstname = firstname;
+            user.Lastname = lastname;
 
             try
             {
