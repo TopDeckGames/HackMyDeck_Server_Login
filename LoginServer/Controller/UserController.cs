@@ -33,8 +33,8 @@ namespace LoginServer.Controller
                             response = this.registerAction(
                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH)),
-                                new string(reader.ReadChars(User.FIRSTNAME_LENGTH)),
-                                new string(reader.ReadChars(User.LASTNAME_LENGTH))
+                                 StringHelper.getTrueString(new string(reader.ReadChars(User.FIRSTNAME_LENGTH))),
+                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LASTNAME_LENGTH)))
                             );
                             break;
                         default:
@@ -105,8 +105,9 @@ namespace LoginServer.Controller
 
             try
             {
-                ManagerFactory.getUserManager().registration(login, password, firstname, lastname);
+                short state = ManagerFactory.getUserManager().registration(login, password, firstname, lastname);
                 response.addValue(1);
+                response.addValue(state);
             }
             catch (Exception e)
             {

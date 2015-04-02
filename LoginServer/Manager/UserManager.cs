@@ -31,7 +31,8 @@ namespace LoginServer.Manager
         /// </summary>
         /// <param name="login">Login.</param>
         /// <param name="password">Password.</param>
-        public void registration(string login, string password, string firstname, string lastname)
+        /// <returns>0 : Echec, 1 : Ok, 2 : Login existant</returns>
+        public short registration(string login, string password, string firstname, string lastname)
         {
             User user = new User(0);
             user.Login = login;
@@ -41,7 +42,7 @@ namespace LoginServer.Manager
 
             try
             {
-                AdapterFactory.getUserAdapter().registration(user);
+                return AdapterFactory.getUserAdapter().registration(user);
             }
             catch (Exception e)
             {
