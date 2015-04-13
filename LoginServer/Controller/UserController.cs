@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using LoginServer.Model;
 using LoginServer.Manager;
@@ -87,9 +87,17 @@ namespace LoginServer.Controller
                 ManagerFactory.getServerManager().checkServers();
                 Model.Server server = ManagerFactory.getServerManager().enterInServer(user);
 
-                //Ajout des données de connexion au server
-                response.addValue(BitConverter.ToInt32(server.Address.GetAddressBytes(), 0));
-                response.addValue(server.Port); 
+                if(server != null)
+                {
+                    response.addValue((ushort)1);
+                    //Ajout des données de connexion au server
+                    response.addValue(BitConverter.ToInt32(server.Address.GetAddressBytes(), 0));
+                    response.addValue(server.Port); 
+                }
+                else
+                {
+                    response.addValue((ushort)0);
+                }
             }
             
             return response;

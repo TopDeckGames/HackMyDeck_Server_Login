@@ -11,7 +11,7 @@ namespace LoginServer.Data
 
         public BaseAdapter()
         {
-            this.connectionString = ConfigurationManager.ConnectionStrings["Connexion1"].ConnectionString;
+            this.connectionString = ConfigurationManager.ConnectionStrings["Connexion2"].ConnectionString;
             this.connection = new MySqlConnection(this.connectionString);
         }
     }
