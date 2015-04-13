@@ -147,7 +147,7 @@ namespace LoginServer
 
                         //Envoi de la requête
                         this.sendToServer(reqJson);
-
+                        Request response = this.waitResponseFromServer();
                         server.Available = true;
 
                         this.disconnectFromServer();
@@ -220,9 +220,68 @@ namespace LoginServer
             List<byte[]> messages = ByteArray.SplitByteArray(byteConverter.GetBytes(message), 117);
             foreach (byte[] m in messages)
             {
-                this.tcpClient.Client.Send(this.rsaClient.Encrypt(m, false));
+                this.tcpClient.Client.Send(this.rsaServer.Encrypt(m, false));
                 Thread.Sleep(5);
             }
+        }
+
+        /// <summary>
+        /// Attend une réponse du serveur distant
+        /// </summary>
+        /// <returns>Request</returns>
+        private Request waitResponseFromServer()
+        {
+            NetworkStream clientStream = this.tcpClient.GetStream();
+            int messageLength = int.Parse(ConfigurationManager.AppSettings["monitoring_message_length"]);
+            byte[] message = new byte[messageLength];
+            int bytesRead;
+            ASCIIEncoding byteConverter = new ASCIIEncoding();
+            Request req = null;
+            StringBuilder requests = new StringBuilder();
+
+            while (req == null)
+            {
+                bytesRead = 0;
+
+                try
+                {
+                    bytesRead = clientStream.Read(message, 0, messageLength);
+                }
+                catch (Exception e)
+                {
+                    Logger.log(typeof(ServerManager), "Erreur lors de l'execution du socket : " + e.Message, Logger.LogType.Error);
+                    break;
+                }
+
+                if (bytesRead == 0)
+                {
+                    Logger.log(typeof(ServerManager), "Connexion interrompue", Logger.LogType.Info);
+                    break;
+                }
+
+                //On récupère le message exact qui a été reçu
+                byte[] data = new byte[bytesRead];
+                for (int i = 0; i < bytesRead; i++)
+                    data[i] = message[i];
+
+                try
+                {
+                    //On décrypte la chaine charactère et on l'ajoute à la pile
+                    string request = byteConverter.GetString(this.rsaClient.Decrypt(data, false));
+                    requests.Append(request);
+                    req = JsonSerializer.fromJson<Request>(requests.toJson());
+                }
+                catch (CryptographicException e)
+                {
+                    Logger.log(typeof(ServerManager), "Erreur lors du décryptage du message : " + e.Message, Logger.LogType.Error);
+                }
+                catch
+                {
+
+                }
+            }
+
+            return req;
         }
 
         /// <summary>
