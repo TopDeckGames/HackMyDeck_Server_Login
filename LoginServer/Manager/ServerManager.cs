@@ -203,7 +203,7 @@ namespace LoginServer
                 string message = JsonSerializer.toJson(req);
                 //Envoi de la requête
                 this.sendToServer(message);
-
+                this.waitResponseFromServer();
                 this.disconnectFromServer();
             }
             return selected;
@@ -221,7 +221,7 @@ namespace LoginServer
             foreach (byte[] m in messages)
             {
                 this.tcpClient.Client.Send(this.rsaServer.Encrypt(m, false));
-                Thread.Sleep(5);
+                Thread.Sleep(1000);
             }
         }
 
@@ -269,7 +269,7 @@ namespace LoginServer
                     //On décrypte la chaine charactère et on l'ajoute à la pile
                     string request = byteConverter.GetString(this.rsaClient.Decrypt(data, false));
                     requests.Append(request);
-                    req = JsonSerializer.fromJson<Request>(requests.toJson());
+                    req = JsonSerializer.fromJson<Request>(requests.ToString());
                 }
                 catch (CryptographicException e)
                 {
