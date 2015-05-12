@@ -33,12 +33,11 @@ namespace LoginServer.Controller
                             response = this.registerAction(
                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
                                 new string(reader.ReadChars(User.PASSWORD_LENGTH)),
-                                 StringHelper.getTrueString(new string(reader.ReadChars(User.FIRSTNAME_LENGTH))),
-                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LASTNAME_LENGTH)))
+                                 StringHelper.getTrueString(new string(reader.ReadChars(User.EMAIL_LENGTH)))
                             );
                             break;
                         default:
-                            Logger.log(typeof(UserManager), "L'action n'existe pas : " + idAction, Logger.LogType.Error);
+                            Logger.log(typeof(UserController), "L'action n'existe pas : " + idAction, Logger.LogType.Error);
                             response = new Response();
                             response.addValue(0);
                             break;
@@ -106,14 +105,14 @@ namespace LoginServer.Controller
         /// <summary>
         /// Enregistre un nouvel utilisateur
         /// </summary>
-        private Response registerAction(string login, string password, string firstname, string lastname)
+        private Response registerAction(string login, string password, string email)
         {
             Response response = new Response();
             response.openWriter();
 
             try
             {
-                short state = ManagerFactory.getUserManager().registration(login, password, firstname, lastname);
+                short state = ManagerFactory.getUserManager().registration(login, password, email);
                 response.addValue(1);
                 response.addValue(state);
             }

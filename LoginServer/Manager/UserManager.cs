@@ -32,13 +32,12 @@ namespace LoginServer.Manager
         /// <param name="login">Login.</param>
         /// <param name="password">Password.</param>
         /// <returns>0 : Echec, 1 : Ok, 2 : Login existant</returns>
-        public short registration(string login, string password, string firstname, string lastname)
+        public short registration(string login, string password, string email)
         {
             User user = new User(0);
             user.Login = login;
             user.Password = password;
-            user.Firstname = firstname;
-            user.Lastname = lastname;
+            user.Email = email;
 
             try
             {

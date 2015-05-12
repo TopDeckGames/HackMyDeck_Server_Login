@@ -71,7 +71,7 @@ namespace LoginServer.Data
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    if ((int)reader["nbId"] != 0)
+                    if (reader.GetOrdinal("nbId") != 0)
                         return 2;
                 }
             }
@@ -85,11 +85,11 @@ namespace LoginServer.Data
                 base.connection.Close();
             }
 
-            cmd.CommandText = "INSERT INTO user(username, password, firstname, lastname) VALUES (@login, @password, @firstname, @lastname)";
+            cmd = base.connection.CreateCommand();
+            cmd.CommandText = "INSERT INTO user(username, password, email) VALUES (@login, @password, @email)";
             cmd.Parameters.AddWithValue("@login", user.Login);
             cmd.Parameters.AddWithValue("@password", user.Password.Trim());
-            cmd.Parameters.AddWithValue("@firstname", user.Firstname);
-            cmd.Parameters.AddWithValue("@lastname", user.Lastname);
+            cmd.Parameters.AddWithValue("@email", user.Email);
 
             try
             {

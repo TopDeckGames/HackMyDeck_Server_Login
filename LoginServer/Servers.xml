@@ -7,4 +7,11 @@
     <MaxPlayers>10</MaxPlayers>
     <Type>1</Type>
   </Server>
+  <Server Name="Combat 1">
+    <IpAddress>127.0.0.1</IpAddress>
+    <Port>3004</Port>
+    <PortMonitoring>3005</PortMonitoring>
+    <MaxPlayers>10</MaxPlayers>
+    <Type>2</Type>
+  </Server>
 </Servers>
