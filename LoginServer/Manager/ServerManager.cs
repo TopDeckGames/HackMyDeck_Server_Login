@@ -210,6 +210,46 @@ namespace LoginServer
         }
 
         /// <summary>
+        /// Enregistre un combat dans un serveur disponible
+        /// </summary>
+        /// <param name="combat">Contient les informations du combat</param>
+        /// <returns>Serveur sélectionné</returns>
+        public Model.Server registerCombat(Combat combat)
+        {
+            Model.Server selected = null;
+            //On sélectionne un serveur parmis la liste
+            foreach (Model.Server server in this.servers)
+            {
+                //Si le serveur est un serveur de combat disponible et qui n'a pas atteind sa capacité maximale
+                if (server.Type.Equals(Model.Server.ServerType.Combat) && server.Available && server.NbPlayers < server.MaxPlayers)
+                {
+                    //Si le serveur est moins chargé que celui sélectionné on échange pour équilibrer les charges
+                    if (selected == null || server.NbPlayers < selected.NbPlayers)
+                    {
+                        selected = server;
+                    }
+                }
+            }
+
+            //Si un serveur a été sélectionné on le contact pour enregistrer le joueur
+            if (selected != null)
+            {
+                this.connectToServer(selected);
+
+                //Préparation de la requête
+                Request req = new Request();
+                req.Type = Request.TypeRequest.Register;
+                req.Data = JsonSerializer.toJson(combat);
+                string message = JsonSerializer.toJson(req);
+                //Envoi de la requête
+                this.sendToServer(message);
+                this.waitResponseFromServer();
+                this.disconnectFromServer();
+            }
+            return selected;
+        }
+
+        /// <summary>
         /// Envoi une chaine de charactères au serveur en la cryptant
         /// </summary>
         /// <param name="message">Message à envoyer</param>

@@ -92,6 +92,7 @@
     <Compile Include="Helper\StringHelper.cs" />
     <Compile Include="Manager\ManagerFactory.cs" />
     <Compile Include="Manager\UserManager.cs" />
+    <Compile Include="Model\Combat.cs" />
     <Compile Include="Model\Request.cs" />
     <Compile Include="Model\Server.cs" />
     <Compile Include="Model\User.cs" />
