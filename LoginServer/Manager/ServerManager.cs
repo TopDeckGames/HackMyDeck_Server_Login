@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using LoginServer.Model;
 using System.Text;
@@ -43,6 +44,16 @@ namespace LoginServer
         public List<Model.Server> getServers()
         {
             return this.servers;
+        }
+
+        /// <summary>
+        /// Récupère un serveur à partir de son nom
+        /// </summary>
+        /// <param name="name">Nom du serveur</param>
+        /// <returns></returns>
+        public Model.Server getServer(string name)
+        {
+            return (Model.Server)this.servers.Where(x => x.Name == name);
         }
 
         /// <summary>
@@ -247,6 +258,28 @@ namespace LoginServer
                 this.disconnectFromServer();
             }
             return selected;
+        }
+
+        /// <summary>
+        /// Annonce au serveur de gestion qu'un combat a été trouvé
+        /// </summary>
+        /// <param name="server">Serveur de gestion à contacter</param>
+        /// <param name="user">Joueur concerné par le combat</param>
+        /// <param name="selected">Serveur de combat vers lequel rediriger le joueur</param>
+        public void registerCombat(Model.Server server, User user, Model.Server selected)
+        {
+            this.connectToServer(server);
+
+            //Préparation de la requête
+            Request req = new Request();
+            req.Type = Request.TypeRequest.EnterCombat;
+            KeyValuePair<User, Model.Server> data = new KeyValuePair<User, Model.Server>(user, selected);
+            req.Data = JsonSerializer.toJson(data);
+            string message = JsonSerializer.toJson(req);
+            //Envoi de la requête
+            this.sendToServer(message);
+            this.waitResponseFromServer();
+            this.disconnectFromServer();
         }
 
         /// <summary>

@@ -129,5 +129,14 @@ namespace LoginServer
         {
             Logger.log(typeof(Server), this.handlers.Count + " clients connectés", Logger.LogType.Info);
         }
+
+        /// <summary>
+        /// Calcule le nombre de clients connectés
+        /// </summary>
+        /// <returns>Nb de clients
+        public int getNbPlayers()
+        {
+            return this.handlers.Count;
+        }
     }
 }

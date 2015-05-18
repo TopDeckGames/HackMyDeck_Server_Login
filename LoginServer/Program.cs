@@ -7,7 +7,8 @@ namespace LoginServer
 {
     class MainClass
     {
-        private static Server server;
+        public static Server Server { get; set; }
+        public static CombatQueue CombatQueue { get; set; }
         private static Monitor monitor;
 
         public static void Main(string[] args)
@@ -29,8 +30,9 @@ namespace LoginServer
             Logger.log(typeof(MainClass), "Test de connexion aux serveurs distants", Logger.LogType.Info);
             ManagerFactory.getServerManager().checkServers();
 
-            server = new Server();
+            Server = new Server();
             monitor = new Monitor();
+            CombatQueue = new CombatQueue();
 
             while (true)
             {
@@ -41,16 +43,19 @@ namespace LoginServer
                 {
                     case "stop":
                     case "exit":
-                        server.stop();
+                        Server.stop();
                         monitor.stop();
+                        CombatQueue.stop();
                         Environment.Exit(0);
                         break;
                     case "restart":
-                        server.stop();
-                        server = new Server();
+                        Server.stop();
+                        CombatQueue.stop();
+                        Server = new Server();
+                        CombatQueue = new CombatQueue();
                         break;
                     case "info":
-                        server.info();
+                        Server.info();
                         break;
                     case "servers info":
                         Console.WriteLine(ManagerFactory.getServerManager().ToString());

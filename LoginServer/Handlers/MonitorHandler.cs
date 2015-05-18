@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading;
 using System.IO;
 using LoginServer.Helper;
+using LoginServer.Model;
+using System.Diagnostics;
 
 namespace LoginServer.Handlers
 {
@@ -131,6 +133,68 @@ namespace LoginServer.Handlers
             }
 
             this.tcpClient.Close();
+        }
+
+        public void analyser()
+        {
+            while (this.active || this.requests.Length > 0)
+            {
+                Request req;
+                string response = String.Empty;
+                try
+                {
+                    if ((req = JsonSerializer.fromJson<Request>(this.requests.ToString())) == null)
+                    {
+                        continue;
+                    }
+                    this.requests.Clear();
+                }
+                catch (Exception)
+                {
+                    continue;
+                }
+
+                Request rep = new Request();
+                switch (req.Type)
+                {
+                    case Request.TypeRequest.Check:
+                        Dictionary<string, object> temp = new Dictionary<string, object>();
+                        Process proc = Process.GetCurrentProcess();
+                        temp.Add("memory", proc.PrivateMemorySize64);
+                        temp.Add("nbPlayers", MainClass.Server.getNbPlayers());
+                        rep.Type = Request.TypeRequest.Response;
+                        rep.Data = JsonSerializer.toJson(temp);
+                        response = JsonSerializer.toJson(rep);
+                        break;
+                    case Request.TypeRequest.EnterCombat:
+                        KeyValuePair<User, Object> data = JsonSerializer.fromJson<KeyValuePair<User, Object>>(req.Data);
+                        MainClass.CombatQueue.addInQueue(data);
+                        break;
+                    case Request.TypeRequest.LeaveCombat:
+                        User user = JsonSerializer.fromJson<User>(req.Data);
+                        MainClass.CombatQueue.removeFromQueue(user);
+                        break;
+                    default:
+                        continue;
+                }
+
+                this.sendMessage(response);
+            }
+        }
+
+        /// <summary>
+        /// Encrypte un message et l'envoi au serveur
+        /// </summary>
+        /// <param name="message">Chaine de charactères à envoyer</param>
+        public void sendMessage(string message)
+        {
+            ASCIIEncoding byteConverter = new ASCIIEncoding();
+            List<byte[]> messages = ByteArray.SplitByteArray(byteConverter.GetBytes(message), 117);
+            foreach (byte[] m in messages)
+            {
+                this.tcpClient.Client.Send(this.rsaClient.Encrypt(m, false));
+                Thread.Sleep(50);
+            }
         }
     }
 }

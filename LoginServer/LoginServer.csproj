@@ -79,6 +79,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CombatQueue.cs" />
     <Compile Include="Controller\ControllerFactory.cs" />
     <Compile Include="Controller\IController.cs" />
     <Compile Include="Controller\UserController.cs" />
