@@ -171,3 +171,6 @@ UpgradeLog*.htm
 # Microsoft Fakes 
 FakesAssemblies/ 
 /ZombieGame/publier
+/LoginServer/bin
+/LoginServer/obj/x86/Debug
+*.suo
