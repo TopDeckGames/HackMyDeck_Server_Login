@@ -53,7 +53,7 @@ namespace LoginServer
         /// <returns></returns>
         public Model.Server getServer(string name)
         {
-            return (Model.Server)this.servers.Where(x => x.Name == name);
+            return (Model.Server)this.servers.Where(x => x.Name.Equals(name));
         }
 
         /// <summary>
