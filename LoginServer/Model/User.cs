@@ -5,7 +5,7 @@ namespace LoginServer.Model
     public class User
     {
         public const int LOGIN_LENGTH = 50;
-        public const int PASSWORD_LENGTH = 32;
+        public const int PASSWORD_LENGTH = 16;
         public const int FIRSTNAME_LENGTH = 75;
         public const int LASTNAME_LENGTH = 75;
         public const int EMAIL_LENGTH = 60;

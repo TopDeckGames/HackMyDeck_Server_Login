@@ -32,8 +32,8 @@ namespace LoginServer.Controller
                         case 2:
                             response = this.registerAction(
                                 StringHelper.getTrueString(new string(reader.ReadChars(User.LOGIN_LENGTH))),
-                                new string(reader.ReadChars(User.PASSWORD_LENGTH)),
-                                 StringHelper.getTrueString(new string(reader.ReadChars(User.EMAIL_LENGTH)))
+                                System.Text.Encoding.UTF8.GetString(reader.ReadBytes(User.PASSWORD_LENGTH)),
+                                StringHelper.getTrueString(new string(reader.ReadChars(User.EMAIL_LENGTH)))
                             );
                             break;
                         default:
