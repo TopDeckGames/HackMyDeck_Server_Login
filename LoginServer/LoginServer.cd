@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="NameAndType">
+  <Class Name="LoginServer.Controller.ControllerFactory">
+    <Position X="9" Y="6.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Controller\ControllerFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Controller.UserController" BaseTypeListCollapsed="true">
+    <Position X="9" Y="8.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABABAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Controller\UserController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="LoginServer.ServerManager">
+    <Position X="0.5" Y="6.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAIARAIAAEAQCAAAAAIACAEAAAIBEAIAAAAAA=</HashCode>
+      <FileName>Manager\ServerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.CombatQueue">
+    <Position X="9.25" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAIAAABAABAAAAAgAAAgAAAAAAAAQAA=</HashCode>
+      <FileName>CombatQueue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Logger" Collapsed="true">
+    <Position X="23" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAEAAAAEAACAAAAAAAAAA=</HashCode>
+      <FileName>Logger.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Monitor">
+    <Position X="18.25" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAkAAgAAAAAMAAAAAA=</HashCode>
+      <FileName>Monitor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.MainClass" Collapsed="true">
+    <Position X="17" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAgAIAAAAAAAAABgAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Response">
+    <Position X="15" Y="6" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>gCAAQAAAAAAAAAAAAAgAAAEAAAAAAIAABQAAAAAAAAA=</HashCode>
+      <FileName>Response.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Server">
+    <Position X="15" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>QAACAAAAAAAAAAAAAAAAAAAQAAAkAAhAQAAAMAAAAAA=</HashCode>
+      <FileName>Server.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Data.AdapterFactory">
+    <Position X="2.75" Y="3" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAACAAAAAAAAAAAAAAAAQAgA=</HashCode>
+      <FileName>Data\AdapterFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Data.BaseAdapter">
+    <Position X="0.75" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\BaseAdapter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Data.ServerAdapter">
+    <Position X="6" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAAAAIAAAAAAAAAAAAAQgA=</HashCode>
+      <FileName>Data\ServerAdapter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Data.UserAdapter">
+    <Position X="3.75" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>Data\UserAdapter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Handlers.ClientHandler">
+    <Position X="12" Y="1.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAACABAAaAAAAAAgEAICIAAAIAA=</HashCode>
+      <FileName>Handlers\ClientHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Handlers.MonitorHandler">
+    <Position X="21" Y="1.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAQACIAAgYAAAIAAAEAACIAAAAAA=</HashCode>
+      <FileName>Handlers\MonitorHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Helper.ByteArray" Collapsed="true">
+    <Position X="23" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helper\ByteArray.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Helper.Checksum" Collapsed="true">
+    <Position X="23" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Helper\Checksum.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Helper.JsonSerializer" Collapsed="true">
+    <Position X="23" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Helper\JsonSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Helper.StringHelper" Collapsed="true">
+    <Position X="23" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>Helper\StringHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Manager.ManagerFactory">
+    <Position X="4.25" Y="8.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AIIAAAAACAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>Manager\ManagerFactory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Manager.UserManager">
+    <Position X="4" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAABAAAAA=</HashCode>
+      <FileName>Manager\UserManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Model.Combat">
+    <Position X="16" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAIAAAgAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Model\Combat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Model.Request">
+    <Position X="17.75" Y="9" Width="1.75" />
+    <NestedTypes>
+      <Enum Name="LoginServer.Model.Request.TypeRequest" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Model\Request.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAQAAAAAAAAA=</HashCode>
+      <FileName>Model\Request.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Model.Server">
+    <Position X="17.75" Y="6" Width="1.75" />
+    <NestedTypes>
+      <Enum Name="LoginServer.Model.Server.ServerType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Model\Server.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAARACABAAAACAQAAAAAACAA=</HashCode>
+      <FileName>Model\Server.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LoginServer.Model.User">
+    <Position X="19.75" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAECAACAAAAFICAAAAAAAMAAAAAACAAAQAAAAAAA=</HashCode>
+      <FileName>Model\User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="LoginServer.IController">
+    <Position X="11.75" Y="8.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAA=</HashCode>
+      <FileName>Controller\IController.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

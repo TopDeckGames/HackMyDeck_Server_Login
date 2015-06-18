@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="LoginServer.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Keys\monitoring.xml">

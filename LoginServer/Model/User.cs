@@ -16,6 +16,7 @@ namespace LoginServer.Model
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public string Email { get; set; }
+        public int Credit { get; set; }
 
         public Server CurrentServer { get; set; }
 
