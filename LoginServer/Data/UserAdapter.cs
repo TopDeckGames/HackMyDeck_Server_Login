@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using LoginServer.Model;
 using System.Data;
+using System.Collections.Generic;
 
 namespace LoginServer.Data
 {
@@ -97,19 +98,25 @@ namespace LoginServer.Data
 
                 cmd = base.connection.CreateCommand();
                 cmd.CommandText = "SELECT id FROM structure";
+                List<int> structures = new List<int>();
                 using (MySqlDataReader reader = cmd.ExecuteReader())
                 {
                     if (reader.HasRows)
                     {
                         while(reader.Read())
                         {
-                            MySqlCommand cmd2 = base.connection.CreateCommand();
-                            cmd2.CommandText = "INSERT INTO user_structure(user_id, structure_id, effectif, level, locked) VALUES (@userId, @structureId, 0, 1, 0);";
-                            cmd2.Parameters.AddWithValue("@userId", user.Id);
-                            cmd2.Parameters.AddWithValue("@structureId", (int)reader["id"]);
-                            cmd2.ExecuteNonQuery();
+                            structures.Add((int)reader["id"]);
                         }
                     }
+                }
+
+                foreach(int id in structures)
+                {
+                    MySqlCommand cmd2 = base.connection.CreateCommand();
+                    cmd2.CommandText = "INSERT INTO user_structure(user_id, structure_id, effectif, level, locked) VALUES (@userId, @structureId, 0, 1, 0);";
+                    cmd2.Parameters.AddWithValue("@userId", user.Id);
+                    cmd2.Parameters.AddWithValue("@structureId", id);
+                    cmd2.ExecuteNonQuery();
                 }
             }
             catch

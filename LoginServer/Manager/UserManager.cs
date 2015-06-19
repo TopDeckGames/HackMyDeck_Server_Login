@@ -38,6 +38,7 @@ namespace LoginServer.Manager
             user.Login = login;
             user.Password = password;
             user.Email = email;
+            user.Credit = 150;
 
             try
             {
